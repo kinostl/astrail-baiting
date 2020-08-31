@@ -1,5 +1,5 @@
 <script>
     import { metatags } from '@sveltech/routify'
-    metatags.title = 'My Routify app'
-    metatags.description = 'Description coming soon...'
+    metatags.title = 'Space Fishing'
+    metatags.description = 'Fishing ... IN SPACE'
 </script>
