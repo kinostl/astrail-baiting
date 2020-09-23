@@ -1,5 +1,6 @@
 <script>
   import { isActive, url } from "@sveltech/routify";
+  import { session } from "../store";
   const links = [
     ["./shop", "🛍️ Shop"],
     ["./stocks", "📈 Trade"],
@@ -24,6 +25,7 @@
     <span>Space Fishing</span>
   </div>
 
+  {#if $session}
   <!-- responsive-->
   <input id="bmenub" type="checkbox" class="show" />
   <label for="bmenub" class="burger pseudo button">menu</label>
@@ -35,6 +37,7 @@
       </a>
     {/each}
   </div>
+  {/if}
 </nav>
 
 <div class="slotContainer">

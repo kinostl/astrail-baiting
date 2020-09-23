@@ -1,5 +1,12 @@
 <script>
+  import { goto } from "@sveltech/routify";
+  import { session } from "../../store";
+
   let name = "waluigi";
+  let doLogOut=()=>{
+    session.logout()
+    $goto('/')
+  }
 </script>
 
 <svelte:head>
@@ -8,7 +15,7 @@
 
 <h1>Hello {name}</h1>
 <div>
-  <button>Log Out</button>
+  <button on:click|preventDefault={doLogOut} class="button">Log Out</button>
   <hr />
   <form>
     <label for="name">Name</label>
