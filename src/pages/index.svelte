@@ -10,6 +10,7 @@
       let _session = await client.authenticateEmail({
         email: "auth@example.com",
         password: "password",
+        create: false,
       });
       session.login(_session);
     } catch (e) {
