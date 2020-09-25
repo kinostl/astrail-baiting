@@ -1,6 +1,24 @@
 <script>
   import CurrentLocation from "../../_components/CurrentLocation.svelte";
+  import { client, session } from "../../store";
+import { onMount } from "svelte";
   let name = "waluigi";
+  let anchors=[];
+  let location=[];
+  onMount(async () => {
+    anchors = await client.rpc($session, "anchors")
+    location = await client.rpc($session, "location")
+  })
+
+  let doTeleport = async ()=>{
+    location = await client.rpcGet("teleport", $session)
+    location = location.payload
+    console.log(location)
+  }
+
+  let doDock = async ()=>{
+    location = await client.rpc($session, "dock")
+  }
 </script>
 
 <style>
@@ -28,7 +46,7 @@
   <title>Welcome to Fish</title>
 </svelte:head>
 <h1>Welcome to Fishing Hole, {name}</h1>
-<CurrentLocation />
+<CurrentLocation entities={location}/>
 <div class="random-teleport">
   <p class="label warning">
     <span>Warning!</span>
@@ -37,7 +55,7 @@
       You can never teleport back to an unanchored location.
     </span>
   </p>
-  <button class="error">Teleport</button>
+  <button on:click|preventDefault={doTeleport} class="error">Teleport</button>
 </div>
 <h2>Your Anchors</h2>
 <div class="flex">

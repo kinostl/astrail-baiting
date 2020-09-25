@@ -1,3 +1,7 @@
+<script>
+  export let entities = [];
+</script>
+
 <style>
   h2 {
     display: flex;
@@ -6,10 +10,7 @@
   }
 </style>
 
-<h2>
-  Unanchored Location
-  <button class="success">Anchor</button>
-</h2>
+<h2>Unanchored Location <button class="success">Anchor</button></h2>
 <div class="flex two-500">
   <div>
     <p>Random nonsense</p>
@@ -17,25 +18,15 @@
   <div>
     <table>
       <tr>
-        <th>Fish Name</th>
+        <th>Entity</th>
         <th>Percent Chance</th>
       </tr>
-      <tr>
-        <td>Fisholio</td>
-        <td>25%</td>
-      </tr>
-      <tr>
-        <td>Sparnal</td>
-        <td>25%</td>
-      </tr>
-      <tr>
-        <td>Sharkanoid</td>
-        <td>25%</td>
-      </tr>
-      <tr>
-        <td>Big Fish</td>
-        <td>25%</td>
-      </tr>
+      {#each entities as entity}
+        <tr>
+          <td>{entity.name}</td>
+          <td>{entity.chance}</td>
+        </tr>
+      {/each}
     </table>
   </div>
 </div>
