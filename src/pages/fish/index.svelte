@@ -1,23 +1,42 @@
 <script>
   import CurrentLocation from "../../_components/CurrentLocation.svelte";
   import { client, session } from "../../store";
-import { onMount } from "svelte";
-  let name = "waluigi";
-  let anchors=[];
-  let location=[];
-  onMount(async () => {
-    anchors = await client.rpc($session, "anchors")
-    location = await client.rpc($session, "location")
-  })
-
-  let doTeleport = async ()=>{
-    location = await client.rpcGet("teleport", $session)
-    location = location.payload
-    console.log(location)
+  import { onMount } from "svelte";
+  let anchors = [];
+  let current_location = {
+    name:'Test Name',
+    description: 'Test Desc',
+    stats:[
+      {'name':'Doge','chance':5}
+    ]
   }
+  onMount(async () => {
+    anchors = await client.listStorageObjects(
+      $session,
+      "anchors",
+      $session.user_id
+    );
+    anchors=anchors.objects
+    current_location = await client.readStorageObjects($session, {
+      object_ids: [
+        {
+          collection: "player_data",
+          key: "current_location",
+          user_id: $session.user_id,
+        },
+      ],
+    });
+    current_location = current_location.objects[0].value;
+    console.log(current_location)
+  });
 
-  let doDock = async ()=>{
-    location = await client.rpc($session, "dock")
+  let doTeleport = async () => {
+    current_location = await client.rpcGet("teleport", $session);
+    current_location = current_location.payload;
+  };
+
+  let viewAnchor = (anchor) => {
+    current_location = anchor
   }
 </script>
 
@@ -45,50 +64,27 @@ import { onMount } from "svelte";
 <svelte:head>
   <title>Welcome to Fish</title>
 </svelte:head>
-<h1>Welcome to Fishing Hole, {name}</h1>
-<CurrentLocation entities={location}/>
+<CurrentLocation {...current_location} />
 <div class="random-teleport">
   <p class="label warning">
     <span>Warning!</span>
     <br />
     <span class="small">
-      You can never teleport back to an unanchored location.
+      You can never teleport back to an unanchored entities.
     </span>
   </p>
   <button on:click|preventDefault={doTeleport} class="error">Teleport</button>
 </div>
 <h2>Your Anchors</h2>
 <div class="flex">
+  {#each anchors as anchor}
   <div>
     <article class="card">
       <header>
-        <h3>Unanchored Location</h3>
+        <h3>{anchor.value.name}</h3>
       </header>
-      <button class="stack">View</button>
+      <button on:click={viewAnchor(anchor)} class="stack">View</button>
     </article>
   </div>
-  <div>
-    <article class="card">
-      <header>
-        <h3>Dockland</h3>
-      </header>
-      <button class="stack">View</button>
-    </article>
-  </div>
-  <div>
-    <article class="card">
-      <header>
-        <h3>Rockland</h3>
-      </header>
-      <button class="stack">View</button>
-    </article>
-  </div>
-  <div>
-    <article class="card">
-      <header>
-        <h3>Sockland</h3>
-      </header>
-      <button class="stack">View</button>
-    </article>
-  </div>
+  {/each}
 </div>

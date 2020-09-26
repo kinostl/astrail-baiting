@@ -1,5 +1,7 @@
 <script>
-  export let entities = [];
+  export let name = "No Name Found";
+  export let description = "No Description Found";
+  export let stats = [];
 </script>
 
 <style>
@@ -10,10 +12,10 @@
   }
 </style>
 
-<h2>Unanchored Location <button class="success">Anchor</button></h2>
+<h2>{name}<button class="success">Anchor</button></h2>
 <div class="flex two-500">
   <div>
-    <p>Random nonsense</p>
+    <p>{description}</p>
   </div>
   <div>
     <table>
@@ -21,10 +23,10 @@
         <th>Entity</th>
         <th>Percent Chance</th>
       </tr>
-      {#each entities as entity}
+      {#each stats as stat}
         <tr>
-          <td>{entity.name}</td>
-          <td>{entity.chance}</td>
+          <td>{stat.name}</td>
+          <td>{stat.chance}</td>
         </tr>
       {/each}
     </table>
