@@ -70,7 +70,7 @@
     <span>Warning!</span>
     <br />
     <span class="small">
-      You can never teleport back to an unanchored entities.
+      You can never teleport back to an unanchored location.
     </span>
   </p>
   <button on:click|preventDefault={doTeleport} class="error">Teleport</button>
